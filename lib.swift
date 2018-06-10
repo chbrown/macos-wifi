@@ -48,9 +48,8 @@ func formatTable(_ dictionaries: [[String: String]],
 
 func formatKVTable(_ dictionary: [String: String]) -> String {
   let keyWidth = dictionary.keys.map { $0.count }.max() ?? 0
-  let entries = dictionary.map { entry in
-    "  \(entry.key.padding(toLength: keyWidth, withPad: " ", startingAt: 0)): \(entry.value)"
+  let lines = dictionary.map { entry in
+    "\(entry.key.padding(toLength: keyWidth, withPad: " ", startingAt: 0)): \(entry.value)"
   }
-  let lines = ["["] + entries + ["]"]
   return lines.joined(separator: "\n")
 }
