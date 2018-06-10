@@ -12,22 +12,26 @@ private func basename(_ pathOption: String?) -> String? {
 
 private func printUsage() {
   let process = basename(CommandLine.arguments.first) ?? "executable"
-  printErr("Usage: \(process) [-h|--help] -action scan|associate [-bssid bssid]")
+  printErr("Usage: \(process) [-h|--help] -action interfaces|current|scan|associate [-bssid bssid]")
 }
 
 // CLI actions
 
-func scan(_ interface: CWInterface) throws {
+func interfaces() {
   printErr("Available interfaces:")
   for interfaceName in CWWiFiClient.interfaceNames() ?? [] {
-    printOut("  \(interfaceName)")
+    printOut(interfaceName)
   }
-  printErr("Using interface: \(interface)")
+}
+
+func current(_ interface: CWInterface) {
   printErr("Current interface:")
   printOut(formatKVTable(interfaceDictionary(interface)))
+}
 
-  let networks = try interface.scanForNetworks(withSSID: nil)
+func scan(_ interface: CWInterface) throws {
   printErr("Available networks:")
+  let networks = try interface.scanForNetworks(withSSID: nil)
   let networkDictionaries = networks.map(networkDictionary)
   let keys = [
     "SSID", "BSSID",
@@ -64,12 +68,16 @@ func main(_ args: [String]) {
   // use UserDefaults to parse other command line arguments
   let defaults = UserDefaults.standard
 
-  let action = defaults.string(forKey: "action") ?? "scan"
+  let action = defaults.string(forKey: "action") ?? "current"
 
   let client = CWWiFiClient.shared()
   let interface = client.interface()!
 
   switch action {
+  case "interfaces":
+    interfaces()
+  case "current":
+    current(interface)
   case "scan":
     try! scan(interface)
   case "associate":
