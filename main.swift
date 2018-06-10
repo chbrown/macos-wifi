@@ -12,7 +12,7 @@ private func basename(_ pathOption: String?) -> String? {
 
 private func printUsage() {
   let process = basename(CommandLine.arguments.first) ?? "executable"
-  printErr("Usage: \(process) [-h|--help] -action interfaces|current|scan|associate [-bssid bssid]")
+  printErr("Usage: \(process) [-h|--help] -action interfaces|current|scan|associate [-bssid bssid] [-password password]")
 }
 
 // CLI actions
@@ -46,11 +46,10 @@ func scan(_ interface: CWInterface) throws {
   printOut(formatTable(Array(networkDictionaries), keys: keys))
 }
 
-func associate(_ interface: CWInterface, bssid: String) throws {
+func associate(_ interface: CWInterface, bssid: String, password: String?) throws {
   let networks = try interface.scanForNetworks(withSSID: nil)
   printErr("Associating with bssid:", bssid)
   if let targetNetwork = networks.first(where: {$0.bssid == bssid}) {
-    let password = args.dropFirst().first
     try interface.associate(to: targetNetwork, password: password)
   } else {
     printErr("No network matching bssid found!")
@@ -59,7 +58,9 @@ func associate(_ interface: CWInterface, bssid: String) throws {
 
 // CLI entry point
 
-func main(_ args: [String]) {
+func main() {
+  // CommandLine.arguments[0] is the path of the executed file, which we drop
+  let args = Array(CommandLine.arguments.dropFirst())
   // handle boolean arguments separately since UserDefaults only processes '-key value' pairs
   if (args.contains { arg in arg == "-h" || arg == "-help" || arg == "--help" }) {
     printUsage()
@@ -82,7 +83,8 @@ func main(_ args: [String]) {
     try! scan(interface)
   case "associate":
     if let bssid = defaults.string(forKey: "bssid") {
-      try! associate(interface, bssid: bssid)
+      let password = defaults.string(forKey: "password")
+      try! associate(interface, bssid: bssid, password: password)
     } else {
       printErr("The 'associate' action requires supplying a -bssid value")
       printUsage()
@@ -95,6 +97,4 @@ func main(_ args: [String]) {
   }
 }
 
-// CommandLine.arguments[0] is the path of the executed file, which we drop
-let args = Array(CommandLine.arguments.dropFirst())
-main(args)
+main()
