@@ -110,7 +110,7 @@ func networkDictionary(_ network: CWNetwork) -> [String: String] {
     "Country":            network.countryCode ?? "N/A",
     "BeaconInterval":     network.beaconInterval.description,
     "IBSS":               network.ibss.description,
-  ].merging(channelDictionary(network.wlanChannel)) { _, new in new }
+  ].merging(optionalChannelDictionary(network.wlanChannel) ?? [:]) { _, new in new }
 }
 
 /**
