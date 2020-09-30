@@ -5,8 +5,6 @@ bindir ?= $(prefix)/bin
 # -O => Compile with optimizations
 CFLAGS := -O
 
-.PHONY: install uninstall link clean
-
 all: bin/wifi
 
 bin/wifi: $(wildcard *.swift)
