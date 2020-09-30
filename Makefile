@@ -11,16 +11,16 @@ bin/wifi: $(wildcard *.swift)
 	@mkdir -p $(@D)
 	xcrun -sdk macosx swiftc -target x86_64-apple-macosx10.10 $+ $(CFLAGS) -o $@
 
-# -b: rename the replaced target `file` to `file.old` if it exists
-# -v: show what's being installed
+# -b => rename the replaced target `file` to `file.old` if it exists
+# -v => show what's being installed
 install: bin/wifi
-	$(INSTALL) -b -v $+ $(DESTDIR)$(bindir)
+	$(INSTALL) -b -v $< $(DESTDIR)$(bindir)
 
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/wifi
 
-# -v: show what's being linked
-# -t: specify target directory
+# -v => show what's being linked
+# -t => specify target directory
 link: bin/wifi
 	stow -vt $(DESTDIR)$(bindir) bin
 
