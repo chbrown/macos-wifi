@@ -11,8 +11,8 @@ import Foundation
 func channelDictionary(_ channel: CWChannel) -> [String: String] {
     return [
         "ChannelNumber": channel.channelNumber.description,
-        "ChannelBand": ChannelBandLabels[channel.channelBand]!,
-        "ChannelWidth": ChannelWidthLabels[channel.channelWidth]!,
+        "ChannelBand": channelBandLabels[channel.channelBand]!,
+        "ChannelWidth": channelWidthLabels[channel.channelWidth]!,
     ]
 }
 
@@ -78,16 +78,16 @@ func interfaceDictionary(_ interface: CWInterface) -> [String: String] {
     return [
         "PowerOn": interface.powerOn().description,
         // "SupportedChannels": interface.supportedWLANChannels()!.description,
-        "ActivePHYMode": PHYModeLabels[interface.activePHYMode()]!,
+        "ActivePHYMode": phyModeLabels[interface.activePHYMode()]!,
         "SSID": interface.ssid() ?? "N/A",
         // "SSIDData": interface.ssidData,
         "BSSID": interface.bssid() ?? "N/A",
         "RSSI": interface.rssiValue().description,
         "Noise": interface.noiseMeasurement().description,
-        "Security": SecurityLabels[interface.security()]!,
+        "Security": securityLabels[interface.security()]!,
         "TransmitRate": interface.transmitRate().description,
         "Country": interface.countryCode() ?? "N/A",
-        "InterfaceMode": InterfaceModeLabels[interface.interfaceMode()]!,
+        "InterfaceMode": interfaceModeLabels[interface.interfaceMode()]!,
         "TransmitPower": interface.transmitPower().description,
         "HardwareAddress": interface.hardwareAddress() ?? "N/A",
         "ServiceActive": interface.serviceActive().description,

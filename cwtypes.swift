@@ -12,7 +12,7 @@ import Foundation
 /**
  Mapping from all CWChannelBand values to string representation.
  */
-let ChannelBandLabels: [CWChannelBand: String] = [
+let channelBandLabels: [CWChannelBand: String] = [
     .bandUnknown: "Unknown", // 0
     .band2GHz: "2GHz", // 1
     .band5GHz: "5GHz", // 2
@@ -21,7 +21,7 @@ let ChannelBandLabels: [CWChannelBand: String] = [
 /**
  Mapping from all CWChannelWidth values to string representation.
  */
-let ChannelWidthLabels: [CWChannelWidth: String] = [
+let channelWidthLabels: [CWChannelWidth: String] = [
     .widthUnknown: "Unknown", // 0
     .width20MHz: "20MHz", // 1
     .width40MHz: "40MHz", // 2
@@ -32,7 +32,7 @@ let ChannelWidthLabels: [CWChannelWidth: String] = [
 /**
  Mapping from all CWPHYMode (IEEE 802.11 physical layer mode) values to string representation.
  */
-let PHYModeLabels: [CWPHYMode: String] = [
+let phyModeLabels: [CWPHYMode: String] = [
     .modeNone: "", // 0
     .mode11a: "802.11a", // 1
     .mode11b: "802.11b", // 2
@@ -44,7 +44,7 @@ let PHYModeLabels: [CWPHYMode: String] = [
 /**
  Mapping from all CWInterfaceMode (Wi-Fi interface operating modes) values to string representation.
  */
-let InterfaceModeLabels: [CWInterfaceMode: String] = [
+let interfaceModeLabels: [CWInterfaceMode: String] = [
     /** Not in any mode */
     .none: "None", // 0
     /** Participating in an infrastructure network as a non-AP station */
@@ -58,7 +58,7 @@ let InterfaceModeLabels: [CWInterfaceMode: String] = [
 /**
  Mapping from all CWSecurity (security types) values to string representation.
  */
-let SecurityLabels: [CWSecurity: String] = [
+let securityLabels: [CWSecurity: String] = [
     /** No authentication required */
     .none: "None", // 0
     /** WEP security */
