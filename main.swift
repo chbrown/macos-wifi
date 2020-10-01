@@ -34,6 +34,7 @@ func main() {
     let defaults = UserDefaults.standard
 
     let action = defaults.string(forKey: "action") ?? "current"
+    let format = defaults.string(forKey: "format") ?? "tty"
 
     let client = CWWiFiClient.shared()
     let interface = client.interface()!
@@ -46,7 +47,16 @@ func main() {
         }
     case "current":
         printErr("Current interface:")
-        printOut(formatKVTable(interfaceDictionary(interface)))
+        let result = interfaceDictionary(interface)
+        if format == "json" {
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try! jsonEncoder.encode(result)
+            FileHandle.standardOutput.write(jsonData)
+            // terminate with newline
+            FileHandle.standardOutput.write(Data([0x0A]))
+        } else { // only other format is "tty"
+            printOut(formatKVTable(result))
+        }
     case "scan":
         printErr("Available networks:")
         let networks = try! interface.scanForNetworks(withSSID: nil)
