@@ -12,7 +12,12 @@ private func basename(_ pathOption: String?) -> String? {
 
 private func printUsage() {
   let process = basename(CommandLine.arguments.first) ?? "executable"
-  printErr("Usage: \(process) [-h|--help] -action interfaces|current|scan|associate [-bssid bssid] [-password password]")
+  printErr("""
+    Usage: \(process) -h|-help|--help
+           \(process) -action interfaces|current|scan
+           \(process) # same as: -action current
+           \(process) -action associate -bssid bssid [-password password]
+    """)
 }
 
 // CLI actions
