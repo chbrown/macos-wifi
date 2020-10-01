@@ -34,7 +34,7 @@ func main() {
     let defaults = UserDefaults.standard
 
     let action = defaults.string(forKey: "action") ?? "current"
-    let format = defaults.string(forKey: "format") ?? "tty"
+    let format = Format(rawValue: defaults.string(forKey: "format") ?? "tty") ?? .tty
 
     let client = CWWiFiClient.shared()
     let interface = client.interface()!
@@ -42,36 +42,17 @@ func main() {
     switch action {
     case "interfaces":
         printErr("Available interfaces:")
-        for interfaceName in CWWiFiClient.interfaceNames() ?? [] {
-            printOut(interfaceName)
-        }
+        let names: [String] = CWWiFiClient.interfaceNames() ?? []
+        try! serialize(names) // format: .json not supported for interface names
     case "current":
         printErr("Current interface:")
         let result = interfaceDictionary(interface)
-        if format == "json" {
-            let jsonEncoder = JSONEncoder()
-            let jsonData = try! jsonEncoder.encode(result)
-            FileHandle.standardOutput.write(jsonData)
-            // terminate with newline
-            FileHandle.standardOutput.write(Data([0x0A]))
-        } else { // only other format is "tty"
-            printOut(formatKVTable(result))
-        }
+        try! serialize(result, format: format)
     case "scan":
         printErr("Available networks:")
         let networks = try! interface.scanForNetworks(withSSID: nil)
         let networkDictionaries = networks.map(networkDictionary)
-        let keys = [
-            "SSID", "BSSID",
-            "ChannelNumber", "ChannelBand", "ChannelWidth",
-            "RSSI",
-            "Noise",
-            // "InformationElement",
-            // "BeaconInterval",
-            // "IBSS",
-            "Country",
-        ]
-        printOut(formatTable(Array(networkDictionaries), keys: keys))
+        try! serialize(networkDictionaries, format: format)
     case "associate":
         if let bssid = defaults.string(forKey: "bssid") {
             let networks = try! interface.scanForNetworks(withSSID: nil)
