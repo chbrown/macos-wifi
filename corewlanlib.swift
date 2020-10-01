@@ -1,67 +1,86 @@
 import Foundation
-/** Most Core WLAN members are prefixed with "CW" */
+/**
+ Most Core WLAN members are prefixed with "CW"
+
+ The `*Labels` mappings below come from one of:
+ {/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer,
+  /Library/Developer/CommandLineTools}
+  /SDKs/MacOSX.sdk/System/Library/Frameworks/CoreWLAN.framework/Versions/A/Headers/CoreWLANTypes.h
+ */
 import CoreWLAN
 
+/**
+ Mapping from all CWChannelBand values to string representation.
+ */
 let ChannelBandLabels: [CWChannelBand: String] = [
     .bandUnknown: "Unknown", // 0
-    .band2GHz:       "2GHz", // 1
-    .band5GHz:       "5GHz", // 2
+    .band2GHz: "2GHz", // 1
+    .band5GHz: "5GHz", // 2
 ]
 
+/**
+ Mapping from all CWChannelWidth values to string representation.
+ */
 let ChannelWidthLabels: [CWChannelWidth: String] = [
     .widthUnknown: "Unknown", // 0
-    .width20MHz:     "20MHz", // 1
-    .width40MHz:     "40MHz", // 2
-    .width80MHz:     "80MHz", // 3
-    .width160MHz:   "160MHz", // 4
+    .width20MHz: "20MHz", // 1
+    .width40MHz: "40MHz", // 2
+    .width80MHz: "80MHz", // 3
+    .width160MHz: "160MHz", // 4
 ]
 
-/** IEEE 802.11 physical layer mode */
+/**
+ Mapping from all CWPHYMode (IEEE 802.11 physical layer mode) values to string representation.
+ */
 let PHYModeLabels: [CWPHYMode: String] = [
-    .modeNone:         "", // 0
-    .mode11a:   "802.11a", // 1
-    .mode11b:   "802.11b", // 2
-    .mode11g:   "802.11g", // 3
-    .mode11n:   "802.11n", // 4
+    .modeNone: "", // 0
+    .mode11a: "802.11a", // 1
+    .mode11b: "802.11b", // 2
+    .mode11g: "802.11g", // 3
+    .mode11n: "802.11n", // 4
     .mode11ac: "802.11ac", // 5
 ]
 
-/** Wi-Fi interface operating modes returned by CWInterface#interfaceMode() */
+/**
+ Mapping from all CWInterfaceMode (Wi-Fi interface operating modes) values to string representation.
+ */
 let InterfaceModeLabels: [CWInterfaceMode: String] = [
   /** Not in any mode */
-  .none:       "None", // 0
+  .none: "None", // 0
   /** Participating in an infrastructure network as a non-AP station */
   .station: "Station", // 1
   /** Participating in an IBSS network */
-  .IBSS:       "IBSS", // 2
+  .IBSS: "IBSS", // 2
   /** Participating in an infrastructure network as an access point */
-  .hostAP:   "HostAP", // 3
+  .hostAP: "HostAP", // 3
 ]
 
-/** Labels describing the IEEE 802.11 physical layer mode */
+/**
+ Mapping from all CWSecurity (security types) values to string representation.
+ */
 let SecurityLabels: [CWSecurity: String] = [
   /** No authentication required */
-  .none:               "None",               // 0
+  .none: "None", // 0
   /** WEP security */
-  .WEP:                "WEP",                // 1
+  .WEP: "WEP", // 1
   /** WPA personal authentication */
-  .wpaPersonal:        "WPAPersonal",        // 2
+  .wpaPersonal: "WPAPersonal", // 2
   /** WPA/WPA2 personal authentication */
-  .wpaPersonalMixed:   "WPAPersonalMixed",   // 3
+  .wpaPersonalMixed: "WPAPersonalMixed", // 3
   /** WPA2 personal authentication */
-  .wpa2Personal:       "WPA2Personal",       // 4
-  .personal:           "Personal",           // 5
+  .wpa2Personal: "WPA2Personal", // 4
+  .personal: "Personal", // 5
   /** Dynamic WEP security */
-  .dynamicWEP:         "DynamicWEP",         // 6
+  .dynamicWEP: "DynamicWEP", // 6
   /** WPA enterprise authentication */
-  .wpaEnterprise:      "WPAEnterprise",      // 7
+  .wpaEnterprise: "WPAEnterprise", // 7
   /** WPA/WPA2 enterprise authentication */
   .wpaEnterpriseMixed: "WPAEnterpriseMixed", // 8
   /** WPA2 enterprise authentication */
-  .wpa2Enterprise:     "WPA2Enterprise",     // 9
-  .enterprise:         "Enterprise",         // 10
+  .wpa2Enterprise: "WPA2Enterprise", // 9
+  .enterprise: "Enterprise", // 10
   /** Unknown security type */
-  .unknown:            "Unknown",            // Int.max
+  .unknown: "Unknown", // Int.max
 ]
 
 /**
@@ -70,12 +89,12 @@ let SecurityLabels: [CWSecurity: String] = [
  - NSInteger channelNumber
  - CWChannelWidth channelWidth
  - CWChannelBand channelBand
-*/
+ */
 func channelDictionary(_ channel: CWChannel) -> [String: String] {
   return [
     "ChannelNumber": channel.channelNumber.description,
-    "ChannelBand":   ChannelBandLabels[channel.channelBand]!,
-    "ChannelWidth":  ChannelWidthLabels[channel.channelWidth]!]
+    "ChannelBand": ChannelBandLabels[channel.channelBand]!,
+    "ChannelWidth": ChannelWidthLabels[channel.channelWidth]!]
 }
 func optionalChannelDictionary(_ channel: CWChannel?) -> [String: String]? {
   if let channelValue = channel {
@@ -101,15 +120,15 @@ func optionalChannelDictionary(_ channel: CWChannel?) -> [String: String]? {
  */
 func networkDictionary(_ network: CWNetwork) -> [String: String] {
   return [
-    "SSID":               network.ssid ?? "N/A",
-    "SSIDData":           String(data: network.ssidData ?? Data(), encoding: .ascii) ?? "N/A",
-    "BSSID":              network.bssid ?? "N/A",
-    "RSSI":               network.rssiValue.description,
-    "Noise":              network.noiseMeasurement.description,
+    "SSID": network.ssid ?? "N/A",
+    "SSIDData": String(data: network.ssidData ?? Data(), encoding: .ascii) ?? "N/A",
+    "BSSID": network.bssid ?? "N/A",
+    "RSSI": network.rssiValue.description,
+    "Noise": network.noiseMeasurement.description,
     "InformationElement": (network.informationElementData ?? Data()).base64EncodedString(),
-    "Country":            network.countryCode ?? "N/A",
-    "BeaconInterval":     network.beaconInterval.description,
-    "IBSS":               network.ibss.description,
+    "Country": network.countryCode ?? "N/A",
+    "BeaconInterval": network.beaconInterval.description,
+    "IBSS": network.ibss.description,
   ].merging(channelDictionary(network.wlanChannel!)) { _, new in new }
 }
 
@@ -134,24 +153,24 @@ func networkDictionary(_ network: CWNetwork) -> [String: String] {
  - serviceActive()         -> BOOL
  - cachedScanResults()     -> NSSet<CWNetwork>?
  - configuration()         -> CWConfiguration?
-*/
+ */
 func interfaceDictionary(_ interface: CWInterface) -> [String: String] {
   return [
-    "PowerOn":            interface.powerOn().description,
-    //"SupportedChannels":  interface.supportedWLANChannels()!.description,
-    "ActivePHYMode":      PHYModeLabels[interface.activePHYMode()]!,
-    "SSID":               interface.ssid() ?? "N/A",
-    // "SSIDData":           interface.ssidData,
-    "BSSID":              interface.bssid() ?? "N/A",
-    "RSSI":               interface.rssiValue().description,
-    "Noise":              interface.noiseMeasurement().description,
-    "Security":           SecurityLabels[interface.security()]!,
-    "TransmitRate":       interface.transmitRate().description,
-    "Country":            interface.countryCode() ?? "N/A",
-    "InterfaceMode":      InterfaceModeLabels[interface.interfaceMode()]!,
-    "TransmitPower":      interface.transmitPower().description,
-    "HardwareAddress":    interface.hardwareAddress() ?? "N/A",
-    "ServiceActive":      interface.serviceActive().description,
-    // "Configuration":      interface.configuration(),
+    "PowerOn": interface.powerOn().description,
+    // "SupportedChannels": interface.supportedWLANChannels()!.description,
+    "ActivePHYMode": PHYModeLabels[interface.activePHYMode()]!,
+    "SSID": interface.ssid() ?? "N/A",
+    // "SSIDData": interface.ssidData,
+    "BSSID": interface.bssid() ?? "N/A",
+    "RSSI": interface.rssiValue().description,
+    "Noise": interface.noiseMeasurement().description,
+    "Security": SecurityLabels[interface.security()]!,
+    "TransmitRate": interface.transmitRate().description,
+    "Country": interface.countryCode() ?? "N/A",
+    "InterfaceMode": InterfaceModeLabels[interface.interfaceMode()]!,
+    "TransmitPower": interface.transmitPower().description,
+    "HardwareAddress": interface.hardwareAddress() ?? "N/A",
+    "ServiceActive": interface.serviceActive().description,
+    // "Configuration": interface.configuration(),
   ].merging(optionalChannelDictionary(interface.wlanChannel()) ?? [:]) { _, new in new }
 }
