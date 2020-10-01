@@ -41,15 +41,12 @@ func main() {
 
     switch action {
     case "interfaces":
-        printErr("Available interfaces:")
         let names: [String] = CWWiFiClient.interfaceNames() ?? []
         try! serialize(names) // format: .json not supported for interface names
     case "current":
-        printErr("Current interface:")
         let result = interfaceDictionary(interface)
         try! serialize(result, format: format)
     case "scan":
-        printErr("Available networks:")
         let networks = try! interface.scanForNetworks(withSSID: nil)
         let networkDictionaries = networks.map(networkDictionary)
         try! serialize(networkDictionaries, format: format)
