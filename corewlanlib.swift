@@ -79,6 +79,12 @@ let SecurityLabels: [CWSecurity: String] = [
   /** WPA2 enterprise authentication */
   .wpa2Enterprise: "WPA2Enterprise", // 9
   .enterprise: "Enterprise", // 10
+  /** WPA3 Personal authentication */
+  .wpa3Personal: "WPA3Personal", // 11
+  /** WPA3 Enterprise authentication */
+  .wpa3Enterprise: "WPA3Enterprise", // 12
+  /** WPA3 Transition (WPA3/WPA2 Personal) authentication */
+  .wpa3Transition: "WPA3Transition", // 13
   /** Unknown security type */
   .unknown: "Unknown", // Int.max
 ]
