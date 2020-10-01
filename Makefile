@@ -26,3 +26,7 @@ link: bin/wifi
 
 clean:
 	rm -f bin/wifi
+
+test:
+	swiftformat --lint *.swift
+	swiftlint lint *.swift
