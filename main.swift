@@ -20,47 +20,6 @@ private func printUsage() {
     """)
 }
 
-// CLI actions
-
-func interfaces() {
-    printErr("Available interfaces:")
-    for interfaceName in CWWiFiClient.interfaceNames() ?? [] {
-        printOut(interfaceName)
-    }
-}
-
-func current(_ interface: CWInterface) {
-    printErr("Current interface:")
-    printOut(formatKVTable(interfaceDictionary(interface)))
-}
-
-func scan(_ interface: CWInterface) throws {
-    printErr("Available networks:")
-    let networks = try interface.scanForNetworks(withSSID: nil)
-    let networkDictionaries = networks.map(networkDictionary)
-    let keys = [
-        "SSID", "BSSID",
-        "ChannelNumber", "ChannelBand", "ChannelWidth",
-        "RSSI",
-        "Noise",
-        // "InformationElement",
-        // "BeaconInterval",
-        // "IBSS",
-        "Country",
-    ]
-    printOut(formatTable(Array(networkDictionaries), keys: keys))
-}
-
-func associate(_ interface: CWInterface, bssid: String, password: String?) throws {
-    let networks = try interface.scanForNetworks(withSSID: nil)
-    printErr("Associating with bssid:", bssid)
-    if let targetNetwork = networks.first(where: { $0.bssid == bssid }) {
-        try interface.associate(to: targetNetwork, password: password)
-    } else {
-        printErr("No network matching bssid found!")
-    }
-}
-
 // CLI entry point
 
 func main() {
@@ -81,15 +40,38 @@ func main() {
 
     switch action {
     case "interfaces":
-        interfaces()
+        printErr("Available interfaces:")
+        for interfaceName in CWWiFiClient.interfaceNames() ?? [] {
+            printOut(interfaceName)
+        }
     case "current":
-        current(interface)
+        printErr("Current interface:")
+        printOut(formatKVTable(interfaceDictionary(interface)))
     case "scan":
-        try! scan(interface)
+        printErr("Available networks:")
+        let networks = try! interface.scanForNetworks(withSSID: nil)
+        let networkDictionaries = networks.map(networkDictionary)
+        let keys = [
+            "SSID", "BSSID",
+            "ChannelNumber", "ChannelBand", "ChannelWidth",
+            "RSSI",
+            "Noise",
+            // "InformationElement",
+            // "BeaconInterval",
+            // "IBSS",
+            "Country",
+        ]
+        printOut(formatTable(Array(networkDictionaries), keys: keys))
     case "associate":
         if let bssid = defaults.string(forKey: "bssid") {
-            let password = defaults.string(forKey: "password")
-            try! associate(interface, bssid: bssid, password: password)
+            let networks = try! interface.scanForNetworks(withSSID: nil)
+            printErr("Associating with bssid:", bssid)
+            if let targetNetwork = networks.first(where: { $0.bssid == bssid }) {
+                let password = defaults.string(forKey: "password")
+                try! interface.associate(to: targetNetwork, password: password)
+            } else {
+                printErr("No network matching bssid found!")
+            }
         } else {
             printErr("The 'associate' action requires supplying a -bssid value")
             printUsage()
