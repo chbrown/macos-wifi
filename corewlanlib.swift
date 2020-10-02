@@ -41,11 +41,11 @@ func optionalChannelDictionary(_ channel: CWChannel?) -> [String: String]? {
 func networkDictionary(_ network: CWNetwork) -> [String: String] {
     return [
         "SSID": network.ssid ?? "N/A",
-        "SSIDData": String(data: network.ssidData ?? Data(), encoding: .ascii) ?? "N/A",
+        // "SSIDData": String(data: network.ssidData ?? Data(), encoding: .ascii) ?? "N/A",
         "BSSID": network.bssid ?? "N/A",
         "RSSI": network.rssiValue.description,
         "Noise": network.noiseMeasurement.description,
-        "InformationElement": (network.informationElementData ?? Data()).base64EncodedString(),
+        // "InformationElement": (network.informationElementData ?? Data()).base64EncodedString(),
         "Country": network.countryCode ?? "N/A",
         "BeaconInterval": network.beaconInterval.description,
         "IBSS": network.ibss.description,
