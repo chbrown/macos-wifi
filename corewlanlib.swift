@@ -8,15 +8,15 @@ import Foundation
  - CWChannelWidth channelWidth
  - CWChannelBand channelBand
  */
-func channelDictionary(_ channel: CWChannel) -> [String: String] {
+func channelDictionary(_ channel: CWChannel) -> [String: Any] {
     return [
-        "ChannelNumber": channel.channelNumber.description,
+        "ChannelNumber": channel.channelNumber,
         "ChannelBand": channelBandLabels[channel.channelBand]!,
         "ChannelWidth": channelWidthLabels[channel.channelWidth]!,
     ]
 }
 
-func optionalChannelDictionary(_ channel: CWChannel?) -> [String: String]? {
+func optionalChannelDictionary(_ channel: CWChannel?) -> [String: Any]? {
     if let channelValue = channel {
         return channelDictionary(channelValue)
     } else {
@@ -38,17 +38,17 @@ func optionalChannelDictionary(_ channel: CWChannel?) -> [String: String]? {
  - NSInteger beaconInterval
  - BOOL ibss
  */
-func networkDictionary(_ network: CWNetwork) -> [String: String] {
+func networkDictionary(_ network: CWNetwork) -> [String: Any?] {
     return [
-        "SSID": network.ssid ?? "N/A",
-        // "SSIDData": String(data: network.ssidData ?? Data(), encoding: .ascii) ?? "N/A",
-        "BSSID": network.bssid ?? "N/A",
-        "RSSI": network.rssiValue.description,
-        "Noise": network.noiseMeasurement.description,
-        // "InformationElement": (network.informationElementData ?? Data()).base64EncodedString(),
-        "Country": network.countryCode ?? "N/A",
-        "BeaconInterval": network.beaconInterval.description,
-        "IBSS": network.ibss.description,
+        "SSID": network.ssid,
+        // "SSIDData": network.ssidData,
+        "BSSID": network.bssid,
+        "RSSI": network.rssiValue,
+        "Noise": network.noiseMeasurement,
+        // "InformationElement": network.informationElementData,
+        "Country": network.countryCode,
+        "BeaconInterval": network.beaconInterval,
+        "IBSS": network.ibss,
     ].merging(channelDictionary(network.wlanChannel!)) { _, new in new }
 }
 
@@ -74,23 +74,23 @@ func networkDictionary(_ network: CWNetwork) -> [String: String] {
  - cachedScanResults()     -> NSSet<CWNetwork>?
  - configuration()         -> CWConfiguration?
  */
-func interfaceDictionary(_ interface: CWInterface) -> [String: String] {
+func interfaceDictionary(_ interface: CWInterface) -> [String: Any?] {
     return [
-        "PowerOn": interface.powerOn().description,
-        // "SupportedChannels": interface.supportedWLANChannels()!.description,
+        "PowerOn": interface.powerOn(),
+        // "SupportedChannels": interface.supportedWLANChannels()!,
         "ActivePHYMode": phyModeLabels[interface.activePHYMode()]!,
-        "SSID": interface.ssid() ?? "N/A",
+        "SSID": interface.ssid(),
         // "SSIDData": interface.ssidData,
-        "BSSID": interface.bssid() ?? "N/A",
-        "RSSI": interface.rssiValue().description,
-        "Noise": interface.noiseMeasurement().description,
+        "BSSID": interface.bssid(),
+        "RSSI": interface.rssiValue(),
+        "Noise": interface.noiseMeasurement(),
         "Security": securityLabels[interface.security()]!,
-        "TransmitRate": interface.transmitRate().description,
-        "Country": interface.countryCode() ?? "N/A",
+        "TransmitRate": interface.transmitRate(),
+        "Country": interface.countryCode(),
         "InterfaceMode": interfaceModeLabels[interface.interfaceMode()]!,
-        "TransmitPower": interface.transmitPower().description,
-        "HardwareAddress": interface.hardwareAddress() ?? "N/A",
-        "ServiceActive": interface.serviceActive().description,
+        "TransmitPower": interface.transmitPower(),
+        "HardwareAddress": interface.hardwareAddress(),
+        "ServiceActive": interface.serviceActive(),
         // "Configuration": interface.configuration(),
     ].merging(optionalChannelDictionary(interface.wlanChannel()) ?? [:]) { _, new in new }
 }
