@@ -14,11 +14,11 @@ Pure Swift CLI to access the [`CoreWLAN`](https://developer.apple.com/documentat
 
   List the available Wi-Fi interfaces in the system.
 
-* `wifi -action current` (or simply `wifi`, since `current` is the default action)
+* `wifi -action current [-format json|tty]` (or simply `wifi`, since `current` is the default action)
 
   Print connection information for the default Wi-Fi interface.
-
-* `wifi -action scan`
+  
+* `wifi -action scan [-format json|tty]`
 
   Scan for available Wi-Fi networks.
 
@@ -26,6 +26,17 @@ Pure Swift CLI to access the [`CoreWLAN`](https://developer.apple.com/documentat
 
   Associate with the Wi-Fi network with the given BSSID.
   (Or attempt to do so; it doesn't seem to work reliably.)
+
+
+* parameter `-format json|tty` (default to `tty`) available for the actions `scan` or `current`
+  - `wifi -action current -format json`
+  - `wifi -action scan -format json`
+    
+  Example usage: you can print a list of available SSID in plain format with [`jq`](https://github.com/stedolan/jq) with this command:
+  
+  `wifi -action scan -format json | jq '.SSID' -r`
+
+
 
 
 ## License
