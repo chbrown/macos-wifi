@@ -44,7 +44,9 @@ func main() {
         let names: [String] = CWWiFiClient.interfaceNames() ?? []
         try! serialize(names) // format: .json not supported for interface names
     case "current":
-        let result = interfaceDictionary(interface)
+        var result = interfaceDictionary(interface)
+        // timestamp with floating point seconds since epoch
+        result["Timestamp"] = Date().timeIntervalSince1970
         try! serialize(result, format: format)
     case "scan":
         let networks = try! interface.scanForNetworks(withSSID: nil)
