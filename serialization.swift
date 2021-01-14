@@ -50,7 +50,11 @@ func formatKVTable(_ dictionary: [String: Any?]) -> String {
  - throws: if value cannot be serialized as JSON
 */
 private func serializeToJSON(_ obj: Any) throws -> Data {
-    return try JSONSerialization.data(withJSONObject: obj)
+    if #available(macOS 10.13, *) {
+        return try JSONSerialization.data(withJSONObject: obj, options: .sortedKeys)
+    } else {
+        return try JSONSerialization.data(withJSONObject: obj)
+    }
 }
 
 /**
