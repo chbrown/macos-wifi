@@ -44,6 +44,16 @@ func formatKVTable(_ dictionary: [String: Any?]) -> String {
 }
 
 /**
+ Serialize a single value to compact JSON representation.
+
+ - parameter obj: any object to serialize
+ - throws: if value cannot be serialized as JSON
+*/
+private func serializeToJSON(_ obj: Any) throws -> Data {
+    return try JSONSerialization.data(withJSONObject: obj)
+}
+
+/**
  Serialize value and write to handle.
 
  - parameter value: any object to serialize
@@ -57,7 +67,7 @@ func serialize(_ value: Any, format: Format = .tty, handle: FileHandle = .standa
         let values: [Any] = value as? [Any] ?? [value]
         for value in values {
             // Nb.: Swift's JSON encoders only support arrays / dictionary at the top level
-            let jsonData = try JSONSerialization.data(withJSONObject: value)
+            let jsonData = try serializeToJSON(value)
             handle.write(jsonData)
             // terminate with newline
             handle.write(newline)
