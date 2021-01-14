@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>github.chbrown.macos-wifi</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/wifi</string>
+      <string>-action</string>
+      <string>current</string>
+      <string>-format</string>
+      <string>json</string>
+    </array>
+    <!-- run every 15 minutes (= 900 seconds) -->
+    <key>StartInterval</key>
+    <integer>900</integer>
+    <key>StandardOutPath</key>
+    <string>/usr/local/var/log/wifi.log</string>
+  </dict>
+</plist>
